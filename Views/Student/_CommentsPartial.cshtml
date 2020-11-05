@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Lab03Mahdi.Models.Comment>
+@{ 
+    string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
+    string fullUrl = "/Comment/Delete?returnUrl=" + url + "&id=";
+}
+<p>
+    <a asp-action="Create" asp-controller="Comment" asp-route-returnUrl="@url">Create New Comment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                Comment: @item.Content
+            </td>
+            <td>
+                Teacher: @Html.ActionLink(item.RecieverName??"No Name", "TeachersPage", "Teacher", new { id = item.RecieverId, returnUrl = url })
+            </td>
+            <td>
+                ❤ @item.Likes
+            </td>
+            <td>
+                Date: @item.TimeStamp.ToString("dddd dd MMMM")
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", "Comment", new { id = item.Guid, returnUrl = url }) |
+                <span id="@item.Guid" class="@fullUrl" onclick="setItem(this)"><a href="#">Delete</a></span>
+                
+            </td>
+
+        </tr>
+
+        }
+    </tbody>
+</table>
+<script>
+    function setItem(el) {
+        document.getElementById('id01').style.display = 'block';
+
+        var url_full = el.getAttribute('class');
+        var clicked_id = el.getAttribute('id');
+        document.getElementById('url_to_delete').title = url_full;
+        document.getElementById('guid_to_delete').title = clicked_id;
+
+    };
+    function deleteItem() {
+        var idd = document.getElementById('guid_to_delete').title;
+        var url = document.getElementById('url_to_delete').title;
+        window.location.replace(url + idd);
+    };
+</script>

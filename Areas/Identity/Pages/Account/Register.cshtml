@@ -13,6 +13,14 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Input.UserType"></label>
+                <select asp-for="Input.UserType" class="form-control">
+                    <option value="1" selected>Teacher</option>
+                    <option value="2">Student</option>
+                </select>
+                <span asp-validation-for="Input.UserType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
@@ -32,15 +40,14 @@
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Use another service to register.</h4>
+            <h4>Make sure choose correct user type.</h4>
             <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
                     <div>
                         <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
+                            Please First select the user type based on what you title. Accounts created as Teacher will be reviewed by Admin and will be activated by Admin.
                         </p>
                     </div>
                 }

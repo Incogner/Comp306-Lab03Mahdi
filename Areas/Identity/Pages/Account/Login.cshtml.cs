@@ -75,6 +75,7 @@ namespace Lab03Mahdi.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+            AppUser user;
 
             if (ModelState.IsValid)
             {
@@ -84,16 +85,16 @@ namespace Lab03Mahdi.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    user = await _userManager.FindByEmailAsync(Input.Email);
+                    if(user != null && user.UserType == UserType.TEACHER)
+                    {
+                        return LocalRedirect("~/Teachers/Dash");
+                    }
+                    else if (user != null && user.UserType == UserType.STUDENT)
+                    {
+                        return LocalRedirect("~/Students/Dash");
+                    }
                     return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
                 }
                 else
                 {

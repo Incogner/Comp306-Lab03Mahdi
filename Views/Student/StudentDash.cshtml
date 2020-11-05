@@ -1,0 +1,11 @@
+﻿@model Lab03Mahdi.ViewModels.StudentDash;
+@{
+    ViewData["Title"] = "StudentDash";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>StudentDash</h1>
+
+<partial name="_CoursesPartial" model="@Model.Courses" />
+<partial name="_CommentsPartial" model="@Model.Comments" />
+<partial name="_AppointmentsPartial" model="@Model.Appointments" />

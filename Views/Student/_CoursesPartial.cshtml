@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Lab03Mahdi.Models.Course>
+@{
+    string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
+    string fullUrl = "/Course/Drop?returnUrl=" + url + "&id=";
+}
+<p>
+    <a asp-action="Create" asp-controller="Course" asp-route-returnUrl="@url">Create New Course</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    Course Name: @item.CourseName
+                </td>
+                <td>
+                    Semester: @item.Semester
+                </td>
+                <td>
+                    Course Description: @item.CourseDescription
+                </td>
+                <td>
+                    Date Added: @item.DateAdded.ToString("dddd dd MMMM")
+                </td>
+                <td>
+
+                    <span id="@item.Guid" class="@fullUrl" onclick="setItem(this)"><a href="#">Drop</a></span>
+
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>
+<script>
+    function setItem(el) {
+        document.getElementById('id01').style.display = 'block';
+
+        var url_full = el.getAttribute('class');
+        var clicked_id = el.getAttribute('id');
+        document.getElementById('url_to_delete').title = url_full;
+        document.getElementById('guid_to_delete').title = clicked_id;
+
+    };
+    function deleteItem() {
+        var idd = document.getElementById('guid_to_delete').title;
+        var url = document.getElementById('url_to_delete').title;
+        window.location.replace(url + idd);
+    };
+</script>

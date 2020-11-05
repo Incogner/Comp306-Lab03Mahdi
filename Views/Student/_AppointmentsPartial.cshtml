@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Lab03Mahdi.Models.Appointment>
+@{
+    string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
+    string fullUrl = "/Appointment/Cancel?returnUrl="+url+"&id=";
+}
+<p>
+    <a asp-action="Create" asp-controller="Appointment" asp-route-returnUrl="@url">Create New Appointment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Appointments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    Scheduled Time: @item.ScheduledTime.ToString("dddd dd MMMM")
+                </td>
+                <td>
+                    Teacher: @Html.ActionLink(item.TeacherId ?? "No Name", "TeachersPage", "Teacher", new { id = item.TeacherId, returnUrl = url })
+                </td>
+                <td>
+                    Location: @item.Location
+                </td>
+                <td>
+                    Confirmed: @{var confirm = item.Confirmed ? "Yes" : "No";} @confirm
+                </td>
+                <td>
+
+                    @Html.ActionLink("Edit", "Edit", "Appointment", new { id = item.Guid, returnUrl = url }) |
+                    <span id="@item.Guid" class="@fullUrl" onclick="setItem(this)"><a href="#">Cancel</a></span>
+
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>
+<script>
+    function setItem(el) {
+        document.getElementById('id01').style.display = 'block';
+        
+        var url_full = el.getAttribute('class');
+        var clicked_id = el.getAttribute('id');
+        document.getElementById('url_to_delete').title = url_full;
+        document.getElementById('guid_to_delete').title = clicked_id;
+
+    };
+    function deleteItem() {
+        var idd = document.getElementById('guid_to_delete').title;
+        var url = document.getElementById('url_to_delete').title;
+        window.location.replace(url+idd);
+    };
+</script>
