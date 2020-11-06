@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<Lab03Mahdi.Models.Course>
-@inject UserManager<AppUser> UserManager
 @{
-    
     string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
     string fullUrl = "/Course/Drop?returnUrl=" + url + "&id=";
 }
 <p>
     <a asp-action="ShowCourses" asp-controller="Course" asp-route-returnUrl="@url">Register to a Course</a>
+    @*<a asp-action="Create" asp-controller="Course" asp-route-returnUrl="@url">Create New Course</a>*@
 </p>
 <table class="table">
     <thead class="thead-light">
@@ -15,7 +14,6 @@
             <th scope="col">Semester</th>
             <th scope="col">Description</th>
             <th scope="col">Date Added</th>
-            <th scope="col">Teacher</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -34,28 +32,6 @@
                 </td>
                 <td>
                     @item.DateAdded.ToString("dddd dd MMMM")
-                </td>
-                <td>
-                    @if (item.Teachers != null)
-                    {
-                        @foreach (string s in item.Teachers)
-                        {
-                            AppUser teacher = UserManager.FindByIdAsync(s).Result;
-                            if (teacher.FirstName != null && teacher.FirstName != "")
-                            {
-                                <a asp-action="ShowTeacher" asp-route-id="@teacher.Id">@teacher.FirstName, @teacher.LastName</a><br />
-                            }
-                            else
-                            {
-                                <a asp-action="ShowTeacher" asp-route-id="@teacher.Id">@teacher.Email</a><br />
-                            }
-                        }
-                    }
-                    else
-                    {
-                        <span>No teacher assigned</span>
-                    }
-
                 </td>
                 <td>
                     <span id="@item.Guid" class="@fullUrl" onclick="setItem(this)"><a href="#">Drop</a></span>

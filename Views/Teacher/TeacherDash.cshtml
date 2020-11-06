@@ -1,8 +1,71 @@
-﻿
+﻿@model Lab03Mahdi.ViewModels.TeacherDash;
 @{
     ViewData["Title"] = "TeacherDash";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var great = "";
+    if (Model.TeacherUser.FirstName != null && Model.TeacherUser.FirstName != "")
+    {
+        great = Model.TeacherUser.FirstName + " " + Model.TeacherUser.LastName;
+    } else
+    {
+        great = Model.TeacherUser.Email;
+    }
+
+    string imgSrc = "/images/blank-avatar.png";
+    if(Model.UserData.PictureStringLink != null && Model.UserData.PictureStringLink.Length > 1)
+    {
+        imgSrc = Model.UserData.PictureStringLink;
+    }
 }
 
-<h1>TeacherDash</h1>
+<h1>Dashboard</h1>
+<hr />
+<table class="table">
+    <tr>
+        <td scope="col">
+            <h4>Hello @great!</h4>
+        </td>
+        <td scope="col" style="text-align:center;">
+            <img src="@imgSrc" alt="Profile Picture" width="150"/>
+            <p>Upload/change your profile picture:</p>
+            <form asp-action="UploadImage" enctype="multipart/form-data" method="post">
+                <input asp-for="ImageFile" accept=".jpg,.jpeg,.png,.gif"/>
+                <input type="submit" />
+            </form>
+        </td>
+    </tr>
+</table>
+<hr />
+<h4>Resume: </h4>
+<p>
+    @if (Model.UserData != null && Model.UserData.ResumeTitle != null && Model.UserData.ResumeTitle != "")
+    {
+        <a href="@Model.UserData.ResumeStringLink" target="_blank">@Model.UserData.ResumeTitle</a>
+    }
+    else
+    {
+        <span>Currently you have no resume!</span>
+    }
+</p>
+@*<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+    </div>
+    <div class="custom-file">
+        <input asp-for="ResumeFile" type="file" class="custom-file-input" id="inputGroupFile01"
+               aria-describedby="inputGroupFileAddon01">
+        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    </div>
+</div>*@
+<p>You can replace you resume with a new one:</p>
+<form asp-action="UploadResume" enctype="multipart/form-data" method="post">
+    <input asp-for="ResumeFile" accept=".doc,.docx,.pdf,.txt,.odf" />
+    <input type="submit" />
+</form>
+<br />
+<hr />
+
+<partial name="_Courses" model="@Model.Courses" />
+<partial name="_Comments" model="@Model.Comments" />
+<partial name="_Appointments" model="@Model.Appointments" />
 

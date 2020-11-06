@@ -2,10 +2,46 @@
 @{
     ViewData["Title"] = "StudentDash";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var great = "";
+    if (Model.StudentUser.FirstName != null && Model.StudentUser.FirstName != "")
+    {
+        great = Model.StudentUser.FirstName + " " + Model.StudentUser.LastName;
+    }
+    else
+    {
+        great = Model.StudentUser.Email;
+    }
+
+    string imgSrc = "/images/blank-avatar.png";
+    if (Model.UserData.PictureStringLink != null && Model.UserData.PictureStringLink.Length > 1)
+    {
+        imgSrc = Model.UserData.PictureStringLink;
+    }
 }
 
-<h1>StudentDash</h1>
+<h1>Dashboard</h1>
+<hr />
+<table class="table">
+    <tr>
+        <td scope="col">
+            <h4>Hello @great!</h4>
+        </td>
+        <td scope="col" style="text-align:center;">
+            <img src="@imgSrc" alt="Profile Picture" width="150" />
+            <p>Upload/change your profile picture:</p>
+            <form asp-action="UploadImage" enctype="multipart/form-data" method="post">
+                <input asp-for="ImageFile" accept=".jpg,.jpeg,.png,.gif" />
+                <input type="submit" />
+            </form>
+        </td>
+    </tr>
+</table>
+<br />
+<hr />
 
 <partial name="_CoursesPartial" model="@Model.Courses" />
+<hr />
 <partial name="_CommentsPartial" model="@Model.Comments" />
+<hr />
 <partial name="_AppointmentsPartial" model="@Model.Appointments" />
+

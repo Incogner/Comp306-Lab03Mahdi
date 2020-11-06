@@ -1,42 +1,32 @@
 ﻿@model IEnumerable<Lab03Mahdi.Models.Appointment>
-@inject UserManager<AppUser> UserManager
 @{
     string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
-    string fullUrl = "/Students/CancelAppointment?returnUrl="+url+"&id=";
+    string fullUrl = "/Appointment/Cancel?returnUrl=" + url + "&id=";
 }
-<h5>
-    My Appointments:
-</h5>
-@*<p>
+<p>
     <a asp-action="Create" asp-controller="Appointment" asp-route-returnUrl="@url">Create New Appointment</a>
-</p>*@
+</p>
 <table class="table">
-    <thead class="thead-light">
+    <thead>
         <tr>
-            <th scope="col">Scheduled Time</th>
-            <th scope="col">Teacher</th>
-            <th scope="col">Location</th>
-            <th scope="col">Confirmed</th>
-            <th scope="col">Actions</th>
+            <th>Appointments</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            var teacher = UserManager.FindByIdAsync(item.TeacherId).Result;
-            var teacherName = teacher.FirstName + ", " + teacher.LastName;
             <tr>
                 <td>
-                    @item.ScheduledTime.ToString()
+                    Scheduled Time: @item.ScheduledTime.ToString("dddd dd MMMM")
                 </td>
                 <td>
-                    @Html.ActionLink(teacherName, "ShowTeacher", "Student", new { id = item.TeacherId, returnUrl = url })
+                    Teacher: @Html.ActionLink(item.TeacherId ?? "No Name", "TeachersPage", "Teacher", new { id = item.TeacherId, returnUrl = url })
                 </td>
                 <td>
-                    @item.Location
+                    Location: @item.Location
                 </td>
                 <td>
-                    @{var confirm = item.Confirmed ? "Yes" : "No";} @confirm
+                    Confirmed: @{var confirm = item.Confirmed ? "Yes" : "No";} @confirm
                 </td>
                 <td>
 
@@ -53,7 +43,7 @@
 <script>
     function setItem(el) {
         document.getElementById('id01').style.display = 'block';
-        
+
         var url_full = el.getAttribute('class');
         var clicked_id = el.getAttribute('id');
         document.getElementById('url_to_delete').title = url_full;

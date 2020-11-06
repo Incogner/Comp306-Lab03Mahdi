@@ -3,13 +3,18 @@
     string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
     string fullUrl = "/Comment/Delete?returnUrl=" + url + "&id=";
 }
-<p>
-    <a asp-action="Create" asp-controller="Comment" asp-route-returnUrl="@url">Create New Comment</a>
-</p>
+
+<h5>
+    My Comments:
+</h5>
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
-            <th>Comments</th>
+            <th scope="col">Reciever</th>
+            <th scope="col">Comment Content</th>
+            <th scope="col">❤ Count</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -17,16 +22,16 @@
         {
         <tr>
             <td>
-                Comment: @item.Content
+                @Html.ActionLink(item.RecieverName ?? "No Name", "ShowTeacher", new { id = item.RecieverId, returnUrl = url }) 
             </td>
             <td>
-                Teacher: @Html.ActionLink(item.RecieverName??"No Name", "TeachersPage", "Teacher", new { id = item.RecieverId, returnUrl = url })
+                @item.Content
             </td>
             <td>
-                ❤ @item.Likes
+                @item.Likes
             </td>
             <td>
-                Date: @item.TimeStamp.ToString("dddd dd MMMM")
+                @item.TimeStamp.ToString("dddd dd MMMM")
             </td>
             <td>
 

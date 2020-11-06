@@ -51,6 +51,14 @@ namespace Lab03Mahdi.Areas.Identity.Pages.Account
             public string UserType { get; set; }
 
             [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -80,7 +88,7 @@ namespace Lab03Mahdi.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 Int32.TryParse(Input.UserType, out int userType);
-                var user = new AppUser { UserName = Input.Email, Email = Input.Email, UserType = (UserType)userType };
+                var user = new AppUser { UserName = Input.Email, Email = Input.Email, UserType = (UserType)userType, FirstName = Input.FirstName, LastName = Input.LastName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

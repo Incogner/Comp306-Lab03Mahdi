@@ -22,6 +22,7 @@ namespace Lab03Mahdi.Models
         public string SenderId { get; set; }
         public string RecieverId { get; set; }
         public string RecieverName { get; set; }
+        public string SenderName { get; set; }
         public string Content { get; set; }
         public DateTime TimeStamp { get; set; }
         public int Likes { get; set; }

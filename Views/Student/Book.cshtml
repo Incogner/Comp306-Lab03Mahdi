@@ -1,0 +1,45 @@
+﻿@model Lab03Mahdi.ViewModels.AppointmentViewModel
+
+@{
+    ViewData["Title"] = "Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>Book Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Book">
+            <input asp-for="@Model.Appointment.TeacherId" value="@Model.Teacher.Id" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Teacher</label>
+                <input class="form-control" value="@Model.Teacher.FirstName, @Model.Teacher.LastName" disabled />
+            </div>
+            @*<div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="@Model.Appointment.Confirmed" /> @Html.DisplayNameFor(model => model.Appointment.Confirmed)
+            </label>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="@Model.Appointment.Location" class="control-label"></label>
+                <input asp-for="@Model.Appointment.Location" class="form-control" />
+                <span asp-validation-for="@Model.Appointment.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Appointment.ScheduledTime" class="control-label"></label>
+                <input asp-for="@Model.Appointment.ScheduledTime" class="form-control" />
+                <span asp-validation-for="@Model.Appointment.ScheduledTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="@Model.ReturnUrl">Back to List</a>
+</div>
+

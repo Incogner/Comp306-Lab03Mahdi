@@ -51,6 +51,8 @@ namespace Lab03Mahdi.Models
         public string Semester { get; set; }
         public string CourseDescription { get; set; }
         public DateTime DateAdded { get; set; }
+        public List<string> Students { get; set; }
+        public List<string> Teachers { get; set; }
 
         public Course()
         {

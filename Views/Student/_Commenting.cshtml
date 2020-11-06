@@ -1,0 +1,75 @@
+﻿@model Lab03Mahdi.ViewModels.StudentDash
+@inject UserManager<AppUser> UserManager
+@{
+    string returnUrl = ViewContext.HttpContext.Request.Path.ToUriComponent() + ViewContext.HttpContext.Request.QueryString;
+    if(Model.Comments != null)
+    {
+        Model.Comments.Sort((x, y) => y.TimeStamp.CompareTo(x.TimeStamp));
+    } else
+    {
+        Model.Comments = new List<Comment>();
+    }
+
+    //var newList = Model.Comments.OrderByDescending(x => x.TimeStamp); ----- Same result as the above line
+    }
+
+<hr />
+<h3>Comments</h3>
+<div class="container bootdey">
+    <div class="col-md-12 bootstrap snippets">
+        <div class="panel">
+            <div class="panel-body">
+                <form asp-action="SubmitComment" asp-controller="Comment" method="post">
+                    <textarea class="form-control" rows="2" name="commentData" placeholder="Your comments about teacher ...."></textarea>
+                    <input type="hidden" name="recieverId" value="@Model.TeacherUser.Id" />
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <div class="mar-top clearfix">
+                        <button class="btn btn-sm btn-primary pull-right" type="submit"><i class="fa fa-pencil fa-fw"></i> Post</button>
+                        @*<a class="btn btn-trans btn-icon fa fa-video-camera add-tooltip" href="#"></a>
+                            <a class="btn btn-trans btn-icon fa fa-camera add-tooltip" href="#"></a>
+                            <a class="btn btn-trans btn-icon fa fa-file add-tooltip" href="#"></a>*@
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-body">
+                <!-- Newsfeed Content -->
+                <!--===================================================-->
+                @foreach (var item in Model.Comments)
+                {
+                    AppUser user = UserManager.FindByIdAsync(item.SenderId).Result;
+
+                    <div class="media-block">
+                        <a class="media-left" href="#"><img class="img-circle img-sm" width="35" alt="Profile Picture" src="/images/blank-avatar.png"></a>
+                        <div class="media-body">
+                            <div class="mar-btm">
+                                @if (user.FirstName != null && user.FirstName != "")
+                                {
+                                    <a asp-action="ShowStudent" asp-route-id="@user.Id" class="btn-link text-semibold media-heading box-inline">@user.FirstName, @user.LastName</a><br />
+                                }
+                                else
+                                {
+                                    <a asp-action="ShowStudent" asp-route-id="@user.Id" class="btn-link text-semibold media-heading box-inline">@user.Email</a><br />
+                                }
+                                <p class="text-muted text-sm">@item.TimeStamp.ToLocalTime()</p>
+                            </div>
+                            <p>@item.Content</p>
+                            <div class="pad-ver">
+                                <div class="btn-group">
+                                    <span class="tag tag-sm"><i class="fa fa-heart text-danger"></i> @item.Likes Likes</span>
+                                    <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
+                                    <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+                                </div>
+                                @*<a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>*@
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                }
+                <!--===================================================-->
+                <!-- End Newsfeed Content -->
+            </div>
+        </div>
+    </div>
+</div>

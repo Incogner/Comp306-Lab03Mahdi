@@ -1,0 +1,67 @@
+﻿@model Lab03Mahdi.ViewModels.StudentDash
+
+
+@{
+    ViewData["Title"] = "ShowTeacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string imgStr = "/images/blank-avatar.png";
+    if(Model.TeacherUser.Picture != null && Model.TeacherUser.Picture != "")
+    {
+        imgStr = Model.TeacherUser.Picture;
+    }
+}
+
+<h1>Teacher Infography</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeacherUser.Picture)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@imgStr" alt="Profile Picture" width="150" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeacherUser.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TeacherUser.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeacherUser.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TeacherUser.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeacherUser.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TeacherUser.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TeacherUser.Resume)
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Html.DisplayFor(model => model.TeacherUser.Resume)" target="_blank">Download Resume</a>
+        </dd>
+        <dd class="col-sm-2">
+        
+        </dd>
+        <dd class="col-sm-10">
+            <form asp-action="ShowBook" asp-controller="Student" asp-route-teacherId="@Model.TeacherUser.Id" method="post">
+                <Button type="submit">Book Appointment</Button>
+            </form>
+        </dd>
+    </dl>
+</div>
+
+<partial name="_Commenting" model="@Model" />
+
+<br />
+<br />
+<div>
+    <a asp-action="Dash">Back to List</a>
+</div>

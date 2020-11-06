@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Lab03Mahdi.Models.Comment>
+
+<h5>
+    Comments for me:
+</h5>
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Sender</th>
+            <th scope="col">Comment Content</th>
+            <th scope="col">❤ Count</th>
+            <th scope="col">Date Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.SenderName
+                </td>
+                <td>
+                    @item.Content
+                </td>
+                <td>
+                    @item.Likes
+                </td>
+                <td>
+                    @item.TimeStamp.ToString("dddd dd MMMM")
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
