@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.DateAdded)
             </td>
             <td>
-                @Html.ActionLink("Register", "Register", new {  id=item.Guid, returnUrl = Context.Request.Query["returnUrl"] }) |
+                @Html.ActionLink("Register", "Register", new {  id=item.Guid, returnUrl = Context.Request.Query["returnUrl"] }) @*|*@
                 @Html.ActionLink("Edit", "Edit", new {  id=item.Guid, returnUrl = Context.Request.Query["returnUrl"] })
             </td>
         </tr>

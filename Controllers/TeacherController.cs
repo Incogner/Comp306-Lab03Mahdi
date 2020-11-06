@@ -71,8 +71,34 @@ namespace Lab03Mahdi.Controllers
             currentUser = await _userManager.GetUserAsync(User);
             return currentUser;
         }
-        
 
+        public IActionResult CancelAppointment(string id, string returnUrl)
+        {
+            GetUserAsync().Wait();
+            appointments = context.LoadAsync<Appointments>(currentUser.Id).Result;
+            if (appointments == null || appointments.AllAppointments == null)
+            {
+                return LocalRedirect("~/Error");
+            }
+
+            Appointment app = appointments.AllAppointments.FirstOrDefault(x => x.Guid == Guid.Parse(id));
+            if (app == null)
+            {
+                return LocalRedirect("~/Error");
+            }
+            appointments.AllAppointments.Remove(app);
+            context.SaveAsync(appointments);
+
+            Appointments studentAppointments = context.LoadAsync<Appointments>(app.StudentId).Result;
+            if (studentAppointments == null || studentAppointments.AllAppointments == null)
+            {
+                return LocalRedirect("~/Error");
+            }
+            Appointment app2 = studentAppointments.AllAppointments.FirstOrDefault(x => x.Guid == app.Guid);
+            studentAppointments.AllAppointments.Remove(app2);
+            context.SaveAsync(studentAppointments);
+            return LocalRedirect(returnUrl);
+        }
         private async Task LoadData()
         {
             appointments = context.LoadAsync<Appointments>(currentUser.Id).Result;

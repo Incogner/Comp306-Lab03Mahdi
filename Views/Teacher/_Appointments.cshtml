@@ -1,36 +1,46 @@
 ﻿@model IEnumerable<Lab03Mahdi.Models.Appointment>
+@inject UserManager<AppUser> UserManager
 @{
     string url = ViewContext.HttpContext.Request.Path.ToUriComponent();
-    string fullUrl = "/Appointment/Cancel?returnUrl=" + url + "&id=";
+    string fullUrl = "/Teachers/CancelAppointment?returnUrl=" + url + "&id=";
 }
-<p>
-    <a asp-action="Create" asp-controller="Appointment" asp-route-returnUrl="@url">Create New Appointment</a>
-</p>
+<h5>
+    My Appointments:
+</h5>
+@*<p>
+        <a asp-action="Create" asp-controller="Appointment" asp-route-returnUrl="@url">Create New Appointment</a>
+    </p>*@
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
-            <th>Appointments</th>
+            <th scope="col">Scheduled Time</th>
+            <th scope="col">Student</th>
+            <th scope="col">Location</th>
+            <th scope="col">Confirmed</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
+            var student = UserManager.FindByIdAsync(item.StudentId).Result;
+            var studentName = student.FirstName + ", " + student.LastName;
             <tr>
                 <td>
-                    Scheduled Time: @item.ScheduledTime.ToString("dddd dd MMMM")
+                    @item.ScheduledTime.ToString()
                 </td>
                 <td>
-                    Teacher: @Html.ActionLink(item.TeacherId ?? "No Name", "TeachersPage", "Teacher", new { id = item.TeacherId, returnUrl = url })
+                    @studentName
                 </td>
                 <td>
-                    Location: @item.Location
+                    @item.Location
                 </td>
                 <td>
-                    Confirmed: @{var confirm = item.Confirmed ? "Yes" : "No";} @confirm
+                    @{var confirm = item.Confirmed ? "Yes" : "No";} @confirm
                 </td>
                 <td>
 
-                    @Html.ActionLink("Edit", "Edit", "Appointment", new { id = item.Guid, returnUrl = url }) |
+                    @*@Html.ActionLink("Edit", "Edit", "Appointment", new { id = item.Guid, returnUrl = url }) |*@
                     <span id="@item.Guid" class="@fullUrl" onclick="setItem(this)"><a href="#">Cancel</a></span>
 
                 </td>
@@ -53,6 +63,6 @@
     function deleteItem() {
         var idd = document.getElementById('guid_to_delete').title;
         var url = document.getElementById('url_to_delete').title;
-        window.location.replace(url+idd);
+        window.location.replace(url + idd);
     };
 </script>
